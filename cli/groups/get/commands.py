@@ -1,7 +1,7 @@
 import click
 from click import Context
 
-from cli.groups.get.group import get_group
+from cli.groups.get import get_group
 from transactions.file_manager import FileManager
 
 
