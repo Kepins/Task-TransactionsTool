@@ -13,10 +13,10 @@ class Transaction(BaseModel):
 
     @classmethod
     def from_line(cls, line: str) -> Self:
-        field_id = line[0:2].strip()
+        field_id = line[0:2]
         counter = int(line[2:8])
         amount = int(line[8:20])
-        currency = line[20:23].strip()
+        currency = line[20:23].lstrip()
         reserved = line[23:120]
 
         return cls(counter=counter, amount=amount, currency=currency)

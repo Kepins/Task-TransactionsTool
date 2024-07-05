@@ -6,18 +6,18 @@ from pydantic import BaseModel, StringConstraints
 class Header(BaseModel):
     FIELD_ID: ClassVar[str] = "01"
 
-    name: Annotated[str, StringConstraints(max_length=28, strip_whitespace=True)]
-    surname: Annotated[str, StringConstraints(max_length=30, strip_whitespace=True)]
-    patronymic: Annotated[str, StringConstraints(max_length=30, strip_whitespace=True)]
-    address: Annotated[str, StringConstraints(max_length=30, strip_whitespace=True)]
+    name: Annotated[str, StringConstraints(max_length=28)]
+    surname: Annotated[str, StringConstraints(max_length=30)]
+    patronymic: Annotated[str, StringConstraints(max_length=30)]
+    address: Annotated[str, StringConstraints(max_length=30)]
 
     @classmethod
     def from_line(cls, line: str) -> Self:
         field_id = line[0:2]
-        name = line[2:30]
-        surname = line[30:60]
-        patronymic = line[61:90]
-        address = line[91:120]
+        name = line[2:30].lstrip()
+        surname = line[30:60].lstrip()
+        patronymic = line[61:90].lstrip()
+        address = line[91:120].lstrip()
 
         return cls(name=name, surname=surname, patronymic=patronymic, address=address)
 
