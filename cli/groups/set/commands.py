@@ -41,7 +41,7 @@ def address(ctx: Context, value: str):
 @click.argument("idx", type=int)
 @click.argument("value", type=int)
 @click.pass_context
-def transaction_amount(ctx: Context, idx:int, value: int):
+def transaction_amount(ctx: Context, idx: int, value: int):
     manager: FileManager = ctx.obj["manager"]
     if idx < 1:
         click.echo("TODO")  # TODO

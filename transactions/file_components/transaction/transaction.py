@@ -29,4 +29,3 @@ class Transaction:
             + " " * 97
             + "\n"
         )
-
