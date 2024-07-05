@@ -1,13 +1,14 @@
-from dataclasses import dataclass
-from typing import Self
+from typing import Self, ClassVar, Annotated
+
+from annotated_types import Interval
+from pydantic import BaseModel
 
 
-@dataclass
-class Footer:
-    FIELD_ID = "03"
+class Footer(BaseModel):
+    FIELD_ID: ClassVar[str] = "03"
 
-    total_counter: int
-    control_sum: int
+    total_counter: Annotated[int, Interval(ge=1, le=20000)]
+    control_sum: Annotated[int, Interval(ge=0, le=999999999999)]
 
     @classmethod
     def from_line(cls, line: str) -> Self:
@@ -26,3 +27,6 @@ class Footer:
             + " " * 100
             + "\n"
         )
+
+    class Config:
+        validate_assignment = True

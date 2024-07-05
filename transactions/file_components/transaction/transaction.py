@@ -1,14 +1,15 @@
-from dataclasses import dataclass
-from typing import Self
+from typing import Self, ClassVar, Literal, Annotated
+
+from annotated_types import Interval
+from pydantic import BaseModel
 
 
-@dataclass
-class Transaction:
-    FIELD_ID = "02"
+class Transaction(BaseModel):
+    FIELD_ID: ClassVar[str] = "02"
 
-    counter: int
-    amount: int
-    currency: str
+    counter: Annotated[int, Interval(ge=1, le=20000)]
+    amount: Annotated[int, Interval(ge=1, le=999999999999)]
+    currency: Literal["DOL", "PLN", "EUR"]
 
     @classmethod
     def from_line(cls, line: str) -> Self:
@@ -29,3 +30,6 @@ class Transaction:
             + " " * 97
             + "\n"
         )
+
+    class Config:
+        validate_assignment = True

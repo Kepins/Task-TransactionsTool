@@ -1,23 +1,23 @@
-from dataclasses import dataclass
-from typing import Self
+from typing import Self, ClassVar, Annotated
+
+from pydantic import BaseModel, StringConstraints
 
 
-@dataclass
-class Header:
-    FIELD_ID = "01"
+class Header(BaseModel):
+    FIELD_ID: ClassVar[str] = "01"
 
-    name: str
-    surname: str
-    patronymic: str
-    address: str
+    name: Annotated[str, StringConstraints(max_length=28, strip_whitespace=True)]
+    surname: Annotated[str, StringConstraints(max_length=30, strip_whitespace=True)]
+    patronymic: Annotated[str, StringConstraints(max_length=30, strip_whitespace=True)]
+    address: Annotated[str, StringConstraints(max_length=30, strip_whitespace=True)]
 
     @classmethod
     def from_line(cls, line: str) -> Self:
-        field_id = line[0:2].strip()
-        name = line[2:30].strip()
-        surname = line[30:60].strip()
-        patronymic = line[61:90].strip()
-        address = line[91:120].strip()
+        field_id = line[0:2]
+        name = line[2:30]
+        surname = line[30:60]
+        patronymic = line[61:90]
+        address = line[91:120]
 
         return cls(name=name, surname=surname, patronymic=patronymic, address=address)
 
@@ -30,3 +30,6 @@ class Header:
             + self.address.rjust(30)
             + "\n"
         )
+
+    class Config:
+        validate_assignment = True
