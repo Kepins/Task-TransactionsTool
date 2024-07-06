@@ -1,20 +1,20 @@
-import os
-
-from .file_components.transaction import Transaction
-from .state import load_components_from_file
-from .state import save_components_to_file
+from ..file_components.transaction import Transaction
+from ..model import Model
+from .state_validator import validate
 
 
-class FileController:
-    def __init__(self, file_path: str | os.PathLike) -> None:
-        self._file_path = file_path
-        self._header, self._transactions, self._footer = load_components_from_file(
-            file_path
+class Controller:
+    def __init__(self, model: Model) -> None:
+        self._model = model
+        self._header, self._transactions, self._footer = (
+            self._model.load_components_from_file()
         )
+        validate(self._header, self._transactions, self._footer)
 
     def save(self) -> None:
-        save_components_to_file(
-            self._file_path, self._header, self._transactions, self._footer
+        validate(self._header, self._transactions, self._footer)
+        self._model.save_components_to_file(
+            self._header, self._transactions, self._footer
         )
 
     def add_transaction(self, amount: int, currency: str) -> None:

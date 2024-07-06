@@ -2,9 +2,9 @@ from typing import ClassVar
 
 from pydantic import BaseModel, field_validator, model_validator
 
-from transactions.file_components.footer import Footer
-from transactions.file_components.header import Header
-from transactions.file_components.transaction import Transaction
+from ..file_components.footer import Footer
+from ..file_components.header import Header
+from ..file_components.transaction import Transaction
 
 
 def validate(header: Header, transactions: list[Transaction], footer: Footer) -> None:

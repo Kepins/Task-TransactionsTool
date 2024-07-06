@@ -2,14 +2,14 @@ import click
 from click import Context
 
 from cli.groups.set import set_group
-from transactions.file_controller import FileController
+from transactions.controller.controller import Controller
 
 
 @set_group.command()
 @click.pass_context
 @click.argument("value", type=str)
 def name(ctx: Context, value: str):
-    manager: FileController = ctx.obj["controller"]
+    manager: Controller = ctx.obj["controller"]
     manager.name = value
 
 
@@ -17,7 +17,7 @@ def name(ctx: Context, value: str):
 @click.pass_context
 @click.argument("value", type=str)
 def surname(ctx: Context, value: str):
-    manager: FileController = ctx.obj["controller"]
+    manager: Controller = ctx.obj["controller"]
     manager.surname = value
 
 
@@ -25,7 +25,7 @@ def surname(ctx: Context, value: str):
 @click.pass_context
 @click.argument("value", type=str)
 def patronymic(ctx: Context, value: str):
-    manager: FileController = ctx.obj["controller"]
+    manager: Controller = ctx.obj["controller"]
     manager.patronymic = value
 
 
@@ -33,7 +33,7 @@ def patronymic(ctx: Context, value: str):
 @click.pass_context
 @click.argument("value", type=str)
 def address(ctx: Context, value: str):
-    manager: FileController = ctx.obj["controller"]
+    manager: Controller = ctx.obj["controller"]
     manager.address = value
 
 
@@ -42,7 +42,7 @@ def address(ctx: Context, value: str):
 @click.argument("value", type=int)
 @click.pass_context
 def transaction_amount(ctx: Context, idx: int, value: int):
-    manager: FileController = ctx.obj["controller"]
+    manager: Controller = ctx.obj["controller"]
     if idx < 1:
         click.echo("TODO")  # TODO
         return
@@ -54,7 +54,7 @@ def transaction_amount(ctx: Context, idx: int, value: int):
 @click.argument("value", type=str)
 @click.pass_context
 def transaction_currency(ctx: Context, idx: int, value: str):
-    manager: FileController = ctx.obj["controller"]
+    manager: Controller = ctx.obj["controller"]
     if idx < 1:
         click.echo("TODO")  # TODO
         return

@@ -2,7 +2,7 @@ import click
 from click import Context
 
 from cli.groups.add import add_group
-from transactions.file_controller import FileController
+from transactions.controller.controller import Controller
 
 
 @add_group.command()
@@ -10,5 +10,5 @@ from transactions.file_controller import FileController
 @click.argument("amount", type=int)
 @click.argument("currency", type=str)
 def transaction(ctx: Context, amount: int, currency: str):
-    manager: FileController = ctx.obj["controller"]
+    manager: Controller = ctx.obj["controller"]
     manager.add_transaction(amount=amount, currency=currency)
