@@ -1,4 +1,7 @@
+import sys
+
 import click
+from pydantic import ValidationError
 
 from ..model import Model
 from ..controller import Controller
@@ -12,8 +15,14 @@ from .groups.get import get_group
 @click.argument("file_path", type=click.Path(exists=True))
 @click.pass_context
 def cli(ctx, file_path):
-    model = Model(file_path)
-    ctx.obj["controller"] = Controller(model=model)
+    try:
+        model = Model(file_path)
+        ctx.obj["controller"] = Controller(model=model)
+    except ValidationError as e:
+        click.echo("File is in invalid state:", err=True)
+        for err in e.errors():
+            click.echo(err["msg"], err=True)
+        sys.exit(1)
 
 
 cli.add_command(add_group)

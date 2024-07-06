@@ -38,10 +38,10 @@ def address(ctx: Context):
 @click.pass_context
 def transaction_amount(ctx: Context, idx: int):
     manager: Controller = ctx.obj["controller"]
-    if idx < 1:
-        click.echo("TODO")  # TODO
-        return
-    click.echo(manager.get_transaction_amount(idx - 1))
+    try:
+        click.echo(manager.get_transaction_amount(idx))
+    except IndexError as e:
+        click.echo(e, err=True)
 
 
 @get_group.command()
@@ -49,10 +49,10 @@ def transaction_amount(ctx: Context, idx: int):
 @click.pass_context
 def transaction_currency(ctx: Context, idx: int):
     manager: Controller = ctx.obj["controller"]
-    if idx < 1:
-        click.echo("TODO")  # TODO
-        return
-    click.echo(manager.get_transaction_currency(idx - 1))
+    try:
+        click.echo(manager.get_transaction_currency(idx))
+    except IndexError as e:
+        click.echo(e, err=True)
 
 
 @get_group.command()

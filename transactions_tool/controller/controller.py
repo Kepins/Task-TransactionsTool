@@ -64,9 +64,21 @@ class Controller:
         self.save()
 
     def get_transaction_amount(self, idx: int) -> int:
+        num_transactions = len(self._transactions)
+        if idx < 1 or idx > num_transactions:
+            raise IndexError(
+                f"IDX must be greater or equal to 1 and less or equal to {num_transactions}"
+            )
+
         return self._transactions[idx].amount
 
     def set_transaction_amount(self, idx: int, value: int) -> None:
+        num_transactions = len(self._transactions)
+        if idx < 1 or idx > num_transactions:
+            raise IndexError(
+                f"IDX must be greater or equal to 1 and less or equal to {num_transactions}"
+            )
+
         transaction = self._transactions[idx]
 
         amount_diff = value - transaction.amount
@@ -75,9 +87,21 @@ class Controller:
         self.save()
 
     def get_transaction_currency(self, idx: int) -> str:
+        num_transactions = len(self._transactions)
+        if idx < 1 or idx > num_transactions:
+            raise IndexError(
+                f"IDX must be greater or equal to 1 and less or equal to {num_transactions}"
+            )
+
         return self._transactions[idx - 1].currency
 
     def set_transaction_currency(self, idx: int, value: str) -> None:
+        num_transactions = len(self._transactions)
+        if idx < 1 or idx > num_transactions:
+            raise IndexError(
+                f"IDX must be greater or equal to 1 and less or equal to {num_transactions}"
+            )
+
         transaction = self._transactions[idx - 1]
         transaction.currency = value
         self.save()

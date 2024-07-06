@@ -18,11 +18,10 @@ class StateValidator(BaseModel):
     transactions: list[Transaction]
     footer: Footer
 
-    @classmethod
-    @field_validator("transactions_tool")
-    def validate_transactions_counters(
-        cls, transactions: list[Transaction]
-    ) -> list[Transaction]:
+    @model_validator(mode="after")
+    def validate_transactions_counters(self):
+        transactions = self.transactions
+
         errors = [
             f"Transaction {i} in order has counter value of {t.counter}."
             for i, t in zip(range(1, len(transactions) + 1), transactions)
@@ -30,7 +29,7 @@ class StateValidator(BaseModel):
         ]
         if errors:
             raise ValueError(errors)
-        return transactions
+        return self
 
     @model_validator(mode="after")
     def validate_number_of_transactions_matches_total_counter(self):
