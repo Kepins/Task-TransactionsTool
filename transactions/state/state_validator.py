@@ -7,15 +7,19 @@ from transactions.file_components.header import Header
 from transactions.file_components.transaction import Transaction
 
 
-class State(BaseModel):
+def validate(header: Header, transactions: list[Transaction], footer: Footer) -> None:
+    StateValidator(header=header, transactions=transactions, footer=footer)
+
+
+class StateValidator(BaseModel):
     MAX_NUMBER_OF_TRANSACTIONS: ClassVar[int] = 20_000
 
     header: Header
     transactions: list[Transaction]
     footer: Footer
 
-    @field_validator("transactions")
     @classmethod
+    @field_validator("transactions")
     def validate_transactions_counters(
         cls, transactions: list[Transaction]
     ) -> list[Transaction]:
@@ -64,12 +68,9 @@ class State(BaseModel):
                 f'Total counter "{footer.total_counter}" does not match number of transactions "{num_transactions}".'
             )
 
-        MAX_NUMBER_OF_TRANSACTIONS = State.MAX_NUMBER_OF_TRANSACTIONS
+        MAX_NUMBER_OF_TRANSACTIONS = StateValidator.MAX_NUMBER_OF_TRANSACTIONS
         if num_transactions > MAX_NUMBER_OF_TRANSACTIONS:
             raise ValueError(
                 f'Number of transactions cannot exceed "{MAX_NUMBER_OF_TRANSACTIONS}".'
             )
         return self
-
-    class Config:
-        validate_assignment = True

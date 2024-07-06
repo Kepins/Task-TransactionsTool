@@ -1,16 +1,17 @@
 import click
 
-from cli.groups.add import add_group
-from cli.groups.set import set_group
-from cli.groups.get import get_group
-from transactions.file_manager import FileManager
+from transactions import FileController
+
+from .groups.add import add_group
+from .groups.set import set_group
+from .groups.get import get_group
 
 
 @click.group()
 @click.argument("file_path", type=click.Path(exists=True))
 @click.pass_context
 def cli(ctx, file_path):
-    ctx.obj["manager"] = FileManager(file_path)
+    ctx.obj["controller"] = FileController(file_path)
 
 
 cli.add_command(add_group)
