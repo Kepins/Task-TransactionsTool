@@ -70,7 +70,7 @@ class Controller:
                 f"IDX must be greater or equal to 1 and less or equal to {num_transactions}"
             )
 
-        return self._transactions[idx].amount
+        return self._transactions[idx - 1].amount
 
     def set_transaction_amount(self, idx: int, value: int) -> None:
         num_transactions = len(self._transactions)
@@ -79,7 +79,7 @@ class Controller:
                 f"IDX must be greater or equal to 1 and less or equal to {num_transactions}"
             )
 
-        transaction = self._transactions[idx]
+        transaction = self._transactions[idx - 1]
 
         amount_diff = value - transaction.amount
         transaction.amount = value
