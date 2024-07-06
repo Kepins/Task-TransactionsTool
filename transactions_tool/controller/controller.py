@@ -1,4 +1,4 @@
-from ..file_components.transaction import Transaction
+from ..model.file_components import Transaction
 from ..model import Model
 from .state_validator import validate
 

@@ -1,10 +1,10 @@
 import os
 from typing import Tuple
 
-from ..file_components.factory import FileComponentFactory
-from ..file_components.footer import Footer
-from ..file_components.header import Header
-from ..file_components.transaction import Transaction
+from .file_components import FileComponentFactory
+from .file_components import Footer
+from .file_components.header import Header
+from .file_components import Transaction
 
 
 class Model:

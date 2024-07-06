@@ -1,4 +1,4 @@
-from cli import cli
+from transactions_tool.cli import cli
 
 
 if __name__ == "__main__":

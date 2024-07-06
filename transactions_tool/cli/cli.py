@@ -1,6 +1,7 @@
 import click
 
-from transactions import Controller, Model
+from ..model import Model
+from ..controller import Controller
 
 from .groups.add import add_group
 from .groups.set import set_group

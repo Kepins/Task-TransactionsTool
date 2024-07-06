@@ -2,9 +2,9 @@ from typing import ClassVar
 
 from pydantic import BaseModel, field_validator, model_validator
 
-from ..file_components.footer import Footer
-from ..file_components.header import Header
-from ..file_components.transaction import Transaction
+from ..model.file_components import Footer
+from ..model.file_components.header import Header
+from ..model.file_components import Transaction
 
 
 def validate(header: Header, transactions: list[Transaction], footer: Footer) -> None:
@@ -19,7 +19,7 @@ class StateValidator(BaseModel):
     footer: Footer
 
     @classmethod
-    @field_validator("transactions")
+    @field_validator("transactions_tool")
     def validate_transactions_counters(
         cls, transactions: list[Transaction]
     ) -> list[Transaction]:
@@ -40,7 +40,7 @@ class StateValidator(BaseModel):
         num_transactions = len(transactions)
         if footer.total_counter != num_transactions:
             raise ValueError(
-                f'Total counter "{footer.total_counter}" does not match number of transactions "{num_transactions}".'
+                f'Total counter "{footer.total_counter}" does not match number of transactions_tool "{num_transactions}".'
             )
         return self
 
@@ -65,12 +65,12 @@ class StateValidator(BaseModel):
 
         if footer.total_counter != num_transactions:
             raise ValueError(
-                f'Total counter "{footer.total_counter}" does not match number of transactions "{num_transactions}".'
+                f'Total counter "{footer.total_counter}" does not match number of transactions_tool "{num_transactions}".'
             )
 
         MAX_NUMBER_OF_TRANSACTIONS = StateValidator.MAX_NUMBER_OF_TRANSACTIONS
         if num_transactions > MAX_NUMBER_OF_TRANSACTIONS:
             raise ValueError(
-                f'Number of transactions cannot exceed "{MAX_NUMBER_OF_TRANSACTIONS}".'
+                f'Number of transactions_tool cannot exceed "{MAX_NUMBER_OF_TRANSACTIONS}".'
             )
         return self

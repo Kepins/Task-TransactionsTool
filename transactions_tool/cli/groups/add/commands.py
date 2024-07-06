@@ -1,8 +1,8 @@
 import click
 from click import Context
 
-from cli.groups.add import add_group
-from transactions.controller.controller import Controller
+from .group import add_group
+from ....controller import Controller
 
 
 @add_group.command()
