@@ -12,12 +12,22 @@ class Transaction(BaseModel):
     currency: Literal["DOL", "PLN", "EUR"]
 
     @classmethod
-    def from_line(cls, line: str) -> Self:
+    def from_line(cls, line: str, line_num: int) -> Self:
         field_id = line[0:2]
+        if field_id != Transaction.FIELD_ID:
+            raise ValueError(
+                f"Line {line_num}: Field ID of Transaction is equal to {field_id} should be {Transaction.FIELD_ID}"
+            )
+
         counter = int(line[2:8])
         amount = int(line[8:20])
         currency = line[20:23].lstrip()
         reserved = line[23:120]
+
+        if reserved != " " * 97:
+            raise ValueError(
+                f"Line {line_num}: Reserved buffer in Transaction is not spaces"
+            )
 
         return cls(counter=counter, amount=amount, currency=currency)
 

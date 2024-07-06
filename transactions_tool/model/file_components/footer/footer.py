@@ -13,9 +13,18 @@ class Footer(BaseModel):
     @classmethod
     def from_line(cls, line: str) -> Self:
         field_id = line[0:2]
+
+        if field_id != Footer.FIELD_ID:
+            raise ValueError(
+                f'Field ID of Footer is equal to "{field_id}" should be "{Footer.FIELD_ID}"'
+            )
+
         total_counter = line[2:8]
         control_sum = line[8:20]
         reserved = line[20:120]
+
+        if reserved != " " * 100:
+            raise ValueError(f"Reserved buffer in Footer is not spaces")
 
         return cls(total_counter=total_counter, control_sum=control_sum)
 

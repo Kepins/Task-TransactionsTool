@@ -1,6 +1,5 @@
-__all__ = ["Header", "Transaction", "Footer", "FileComponentFactory"]
+__all__ = ["Header", "Transaction", "Footer"]
 
-from .factory import FileComponentFactory
 from .footer import Footer
 from .header import Header
 from .transaction import Transaction

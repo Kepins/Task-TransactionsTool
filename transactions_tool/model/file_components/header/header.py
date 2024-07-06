@@ -14,6 +14,11 @@ class Header(BaseModel):
     @classmethod
     def from_line(cls, line: str) -> Self:
         field_id = line[0:2]
+        if field_id != Header.FIELD_ID:
+            raise ValueError(
+                f'Field ID of Header is equal to "{field_id}" should be "{Header.FIELD_ID}"'
+            )
+
         name = line[2:30].lstrip()
         surname = line[30:60].lstrip()
         patronymic = line[61:90].lstrip()

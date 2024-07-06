@@ -1,7 +1,8 @@
 import os
 from typing import Tuple
 
-from .file_components import FileComponentFactory
+from pydantic_core import PydanticCustomError
+
 from .file_components import Footer
 from .file_components.header import Header
 from .file_components import Transaction
@@ -13,20 +14,25 @@ class Model:
 
     def load_components_from_file(self) -> Tuple[Header, list[Transaction], Footer]:
         with open(self.file_path, "r", encoding="UTF-8") as file:
-            lines = file.readlines()
+            lines = file.read().splitlines()
 
-            header = FileComponentFactory.file_component_from_line(lines[0])
-            assert type(header) is Header
-            footer = FileComponentFactory.file_component_from_line(lines[-1])
-            assert type(footer) is Footer
+            lines_not_120s = [len(line) != 120 for line in lines]
+            if any(lines_not_120s):
+                first_line_not_120 = lines_not_120s.index(True)
+                raise ValueError(
+                    f"Line {first_line_not_120} has {len(lines[first_line_not_120])} characters should have 120"
+                )
+
+            header_line = lines[0]
+            header = Header.from_line(header_line)
+
+            footer_line = lines[-1]
+            footer = Footer.from_line(footer_line)
 
             transactions = [
-                FileComponentFactory.file_component_from_line(line)
-                for line in lines[1:-1]
+                Transaction.from_line(line, line_num)
+                for line_num, line in zip(range(1, 1 + len(lines[1:-1])), lines[1:-1])
             ]
-            assert all(
-                [type(transaction) is Transaction for transaction in transactions]
-            )
 
             return (
                 header,

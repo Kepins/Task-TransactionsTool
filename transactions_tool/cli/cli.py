@@ -2,6 +2,7 @@ import sys
 
 import click
 from pydantic import ValidationError
+from pydantic_core import PydanticCustomError
 
 from ..model import Model
 from ..controller import Controller
@@ -22,6 +23,10 @@ def cli(ctx, file_path):
         click.echo("File is in invalid state:", err=True)
         for err in e.errors():
             click.echo(err["msg"], err=True)
+        sys.exit(1)
+    except ValueError as e:
+        click.echo("File is in invalid state:", err=True)
+        click.echo(e, err=True)
         sys.exit(1)
 
 
