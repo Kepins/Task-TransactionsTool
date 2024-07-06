@@ -32,18 +32,6 @@ class StateValidator(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def validate_number_of_transactions_matches_total_counter(self):
-        transactions = self.transactions
-        footer = self.footer
-
-        num_transactions = len(transactions)
-        if footer.total_counter != num_transactions:
-            raise ValueError(
-                f'Total counter "{footer.total_counter}" does not match number of transactions_tool "{num_transactions}".'
-            )
-        return self
-
-    @model_validator(mode="after")
     def validate_control_sum_equal_to_sum_of_amounts(self):
         transactions = self.transactions
         footer = self.footer
@@ -64,7 +52,7 @@ class StateValidator(BaseModel):
 
         if footer.total_counter != num_transactions:
             raise ValueError(
-                f'Total counter "{footer.total_counter}" does not match number of transactions_tool "{num_transactions}".'
+                f'Total counter "{footer.total_counter}" does not match number of transactions "{num_transactions}".'
             )
 
         MAX_NUMBER_OF_TRANSACTIONS = StateValidator.MAX_NUMBER_OF_TRANSACTIONS
