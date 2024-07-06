@@ -9,7 +9,13 @@ def test_set_transaction_amount(valid_transaction_file):
 
         result = runner.invoke(
             cli,
-            [valid_transaction_file.file_path, "set", "transaction-amount", "1", "1250"],
+            [
+                valid_transaction_file.file_path,
+                "set",
+                "transaction-amount",
+                "1",
+                "1250",
+            ],
             obj={},
         )
         assert result.exit_code == 0
@@ -28,5 +34,3 @@ def test_set_transaction_amount(valid_transaction_file):
             diff = new_amount - previous_amount
 
             assert control_sum == str(valid_transaction_file.control_sum + diff)
-
-

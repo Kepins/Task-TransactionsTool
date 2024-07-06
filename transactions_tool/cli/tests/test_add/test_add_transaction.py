@@ -43,4 +43,3 @@ def test_add_transaction(valid_transaction_file):
             assert f_total_counter == str(previous_total_counter)
             assert f_control_sum == str(previous_control_sum + 1000)
             assert f_reserved == " " * 100
-

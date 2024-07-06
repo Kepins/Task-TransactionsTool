@@ -8,7 +8,9 @@ def test_set_address(valid_transaction_file):
     with runner.isolated_filesystem(temp_dir=valid_transaction_file.tmp_path):
 
         result = runner.invoke(
-            cli, [valid_transaction_file.file_path, "set", "address", "NEW ADDR"], obj={}
+            cli,
+            [valid_transaction_file.file_path, "set", "address", "NEW ADDR"],
+            obj={},
         )
 
         assert result.exit_code == 0
@@ -17,4 +19,3 @@ def test_set_address(valid_transaction_file):
             address = header[90:120].lstrip()
 
             assert address == "NEW ADDR"
-

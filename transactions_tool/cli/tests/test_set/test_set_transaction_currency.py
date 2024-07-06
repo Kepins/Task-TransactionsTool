@@ -9,7 +9,13 @@ def test_set_transaction_currency(valid_transaction_file):
 
         result = runner.invoke(
             cli,
-            [valid_transaction_file.file_path, "set", "transaction-currency", "1", "EUR"],
+            [
+                valid_transaction_file.file_path,
+                "set",
+                "transaction-currency",
+                "1",
+                "EUR",
+            ],
             obj={},
         )
         assert result.exit_code == 0
