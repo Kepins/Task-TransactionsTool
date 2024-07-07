@@ -47,3 +47,11 @@ To add transaction to a file named transactions.trans, use the following command
 ```sh
 python main.py transactions.trans add transaction 1000 PLN
 ```
+
+## Tests
+
+To run tests use
+
+```sh
+pytest .
+```
