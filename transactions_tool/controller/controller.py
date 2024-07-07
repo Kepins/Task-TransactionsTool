@@ -1,5 +1,6 @@
 from pydantic import ValidationError
 
+from ..constants import MAX_TRANSACTION_AMOUNT, MAX_COUNTER
 from ..model.file_components import Transaction
 from ..model import Model
 from .state_validator import validate
@@ -23,13 +24,19 @@ class Controller:
         try:
             self._footer.total_counter += 1
         except ValidationError:
-            raise ValueError("Max number of transactions reached.")
-        self._footer.control_sum += amount
+            raise ValueError(f"Max number of transactions equal to {MAX_COUNTER} reached")
+
         self._transactions.append(
             Transaction(
                 counter=self._footer.total_counter, amount=amount, currency=currency
             )
         )
+
+        try:
+            self._footer.control_sum += amount
+        except ValidationError:
+            raise ValueError(f"After transaction sum of amounts exceeds {MAX_TRANSACTION_AMOUNT}")
+
         self.save()
 
     @property
@@ -88,7 +95,10 @@ class Controller:
 
         amount_diff = value - transaction.amount
         transaction.amount = value
-        self._footer.control_sum += amount_diff
+        try:
+            self._footer.control_sum += amount_diff
+        except ValidationError:
+            raise ValueError(F"After updating transaction amount sum of amounts exceeds {MAX_TRANSACTION_AMOUNT}")
         self.save()
 
     def get_transaction_currency(self, idx: int) -> str:

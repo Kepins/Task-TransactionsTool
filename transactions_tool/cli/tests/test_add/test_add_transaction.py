@@ -45,6 +45,42 @@ def test_add_transaction(valid_transaction_file):
             assert f_reserved == " " * 100
 
 
+def test_add_transaction_to_big_amount(valid_transaction_file):
+    runner = CliRunner()
+    with runner.isolated_filesystem(temp_dir=valid_transaction_file.tmp_path):
+        result = runner.invoke(
+            cli,
+            [valid_transaction_file.file_path, "add", "transaction", "100000000000000", "DOL"],
+            obj={},
+        )
+        assert result.exit_code == 1
+        assert result.output == "Input should be less than or equal to 999999999999\n"
+
+
+def test_add_transaction_wrong_currency(valid_transaction_file):
+    runner = CliRunner()
+    with runner.isolated_filesystem(temp_dir=valid_transaction_file.tmp_path):
+        result = runner.invoke(
+            cli,
+            [valid_transaction_file.file_path, "add", "transaction", "1000", "YEN"],
+            obj={},
+        )
+        assert result.exit_code == 1
+        assert result.output == "Input should be 'DOL', 'PLN' or 'EUR'\n"
+
+
+def test_add_transaction_control_sum_exceeds_limit(valid_transaction_file):
+    runner = CliRunner()
+    with runner.isolated_filesystem(temp_dir=valid_transaction_file.tmp_path):
+        result = runner.invoke(
+            cli,
+            [valid_transaction_file.file_path, "add", "transaction", "999999999999", "DOL"],
+            obj={},
+        )
+        assert result.exit_code == 1
+        assert result.output == "After transaction sum of amounts exceeds 999999999999\n"
+
+
 def test_max_num_transactions(valid_transaction_file_max_transactions):
     runner = CliRunner()
     with runner.isolated_filesystem(temp_dir=valid_transaction_file_max_transactions.tmp_path):
@@ -54,5 +90,5 @@ def test_max_num_transactions(valid_transaction_file_max_transactions):
             obj={},
         )
         assert result.exit_code == 1
-        assert result.output == "Max number of transactions reached.\n"
+        assert result.output == "Max number of transactions equal to 20000 reached\n"
 

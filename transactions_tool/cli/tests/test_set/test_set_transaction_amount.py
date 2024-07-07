@@ -46,13 +46,40 @@ def test_set_transaction_amount_to_big(valid_transaction_file):
                 "set",
                 "transaction-amount",
                 "1",
-                "9999999999999999999",
+                "1000000000000",
             ],
             obj={},
         )
 
         assert result.exit_code == 1
         assert result.output == "Input should be less than or equal to 999999999999\n"
+
+        with open(valid_transaction_file.file_path, "r") as file:
+            lines = file.readlines()
+            transaction_1 = lines[1]
+            amount = transaction_1[8:20].lstrip("0")
+
+            # Assert not changed
+            assert amount == str(valid_transaction_file.transactions[1].amount)
+
+
+def test_set_transaction_amount_control_sum_exceeds_limit(valid_transaction_file):
+    runner = CliRunner()
+    with runner.isolated_filesystem(temp_dir=valid_transaction_file.tmp_path):
+        result = runner.invoke(
+            cli,
+            [
+                valid_transaction_file.file_path,
+                "set",
+                "transaction-amount",
+                "1",
+                "999999999999",
+            ],
+            obj={},
+        )
+
+        assert result.exit_code == 1
+        assert result.output == "After updating transaction amount sum of amounts exceeds 999999999999\n"
 
         with open(valid_transaction_file.file_path, "r") as file:
             lines = file.readlines()

@@ -3,12 +3,14 @@ from typing import Self, ClassVar, Literal, Annotated
 from annotated_types import Interval
 from pydantic import BaseModel
 
+from transactions_tool.constants import MAX_TRANSACTION_AMOUNT, MAX_COUNTER
+
 
 class Transaction(BaseModel):
     FIELD_ID: ClassVar[str] = "02"
 
-    counter: Annotated[int, Interval(ge=1, le=20000)]
-    amount: Annotated[int, Interval(ge=1, le=999999999999)]
+    counter: Annotated[int, Interval(ge=1, le=MAX_COUNTER)]
+    amount: Annotated[int, Interval(ge=1, le=MAX_TRANSACTION_AMOUNT)]
     currency: Literal["DOL", "PLN", "EUR"]
 
     @classmethod

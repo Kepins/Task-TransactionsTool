@@ -2,6 +2,7 @@ from typing import ClassVar
 
 from pydantic import BaseModel, field_validator, model_validator
 
+from ..constants import MAX_COUNTER
 from ..model.file_components import Footer
 from ..model.file_components.header import Header
 from ..model.file_components import Transaction
@@ -12,7 +13,7 @@ def validate(header: Header, transactions: list[Transaction], footer: Footer) ->
 
 
 class StateValidator(BaseModel):
-    MAX_NUMBER_OF_TRANSACTIONS: ClassVar[int] = 20_000
+    MAX_NUMBER_OF_TRANSACTIONS: ClassVar[int] = MAX_COUNTER
 
     header: Header
     transactions: list[Transaction]
