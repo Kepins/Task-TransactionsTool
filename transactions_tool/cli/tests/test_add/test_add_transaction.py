@@ -50,7 +50,13 @@ def test_add_transaction_to_big_amount(valid_transaction_file):
     with runner.isolated_filesystem(temp_dir=valid_transaction_file.tmp_path):
         result = runner.invoke(
             cli,
-            [valid_transaction_file.file_path, "add", "transaction", "100000000000000", "DOL"],
+            [
+                valid_transaction_file.file_path,
+                "add",
+                "transaction",
+                "100000000000000",
+                "DOL",
+            ],
             obj={},
         )
         assert result.exit_code == 1
@@ -74,21 +80,36 @@ def test_add_transaction_control_sum_exceeds_limit(valid_transaction_file):
     with runner.isolated_filesystem(temp_dir=valid_transaction_file.tmp_path):
         result = runner.invoke(
             cli,
-            [valid_transaction_file.file_path, "add", "transaction", "999999999999", "DOL"],
+            [
+                valid_transaction_file.file_path,
+                "add",
+                "transaction",
+                "999999999999",
+                "DOL",
+            ],
             obj={},
         )
         assert result.exit_code == 1
-        assert result.output == "After transaction sum of amounts exceeds 999999999999\n"
+        assert (
+            result.output == "After transaction sum of amounts exceeds 999999999999\n"
+        )
 
 
 def test_max_num_transactions(valid_transaction_file_max_transactions):
     runner = CliRunner()
-    with runner.isolated_filesystem(temp_dir=valid_transaction_file_max_transactions.tmp_path):
+    with runner.isolated_filesystem(
+        temp_dir=valid_transaction_file_max_transactions.tmp_path
+    ):
         result = runner.invoke(
             cli,
-            [valid_transaction_file_max_transactions.file_path, "add", "transaction", "1000", "DOL"],
+            [
+                valid_transaction_file_max_transactions.file_path,
+                "add",
+                "transaction",
+                "1000",
+                "DOL",
+            ],
             obj={},
         )
         assert result.exit_code == 1
         assert result.output == "Max number of transactions equal to 20000 reached\n"
-

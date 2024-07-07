@@ -24,7 +24,9 @@ class Controller:
         try:
             self._footer.total_counter += 1
         except ValidationError:
-            raise ValueError(f"Max number of transactions equal to {MAX_COUNTER} reached")
+            raise ValueError(
+                f"Max number of transactions equal to {MAX_COUNTER} reached"
+            )
 
         self._transactions.append(
             Transaction(
@@ -35,7 +37,9 @@ class Controller:
         try:
             self._footer.control_sum += amount
         except ValidationError:
-            raise ValueError(f"After transaction sum of amounts exceeds {MAX_TRANSACTION_AMOUNT}")
+            raise ValueError(
+                f"After transaction sum of amounts exceeds {MAX_TRANSACTION_AMOUNT}"
+            )
 
         self.save()
 
@@ -98,7 +102,9 @@ class Controller:
         try:
             self._footer.control_sum += amount_diff
         except ValidationError:
-            raise ValueError(F"After updating transaction amount sum of amounts exceeds {MAX_TRANSACTION_AMOUNT}")
+            raise ValueError(
+                f"After updating transaction amount sum of amounts exceeds {MAX_TRANSACTION_AMOUNT}"
+            )
         self.save()
 
     def get_transaction_currency(self, idx: int) -> str:

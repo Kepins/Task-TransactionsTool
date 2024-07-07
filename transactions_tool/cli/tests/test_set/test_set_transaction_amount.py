@@ -79,7 +79,10 @@ def test_set_transaction_amount_control_sum_exceeds_limit(valid_transaction_file
         )
 
         assert result.exit_code == 1
-        assert result.output == "After updating transaction amount sum of amounts exceeds 999999999999\n"
+        assert (
+            result.output
+            == "After updating transaction amount sum of amounts exceeds 999999999999\n"
+        )
 
         with open(valid_transaction_file.file_path, "r") as file:
             lines = file.readlines()

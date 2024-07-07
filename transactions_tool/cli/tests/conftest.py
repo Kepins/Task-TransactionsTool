@@ -108,7 +108,8 @@ def valid_transaction_file_max_transactions(tmp_path):
     file_path = os.path.join(tmp_path, file_name)
 
     transactions = {
-        i: ValidTransaction(counter=i, amount=1000, currency="DOL") for i in range(1, 20_001)
+        i: ValidTransaction(counter=i, amount=1000, currency="DOL")
+        for i in range(1, 20_001)
     }
 
     fixture = ValidTransactionsFile(
@@ -120,7 +121,7 @@ def valid_transaction_file_max_transactions(tmp_path):
         address="TEST ADDRESS",
         transactions=transactions,
         total_counter=20_000,
-        control_sum=1000 * 20_000
+        control_sum=1000 * 20_000,
     )
 
     header = (
@@ -139,7 +140,8 @@ def valid_transaction_file_max_transactions(tmp_path):
             + t.currency.rjust(3)
             + " " * 97
             + "\n"
-        ) for t in fixture.transactions.values()
+        )
+        for t in fixture.transactions.values()
     ]
 
     footer = (

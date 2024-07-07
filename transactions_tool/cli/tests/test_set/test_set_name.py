@@ -24,7 +24,12 @@ def test_set_name_to_long(valid_transaction_file):
 
         result = runner.invoke(
             cli,
-            [valid_transaction_file.file_path, "set", "name", "NEW NAME THAT EXCEEDS 28 characters limit"],
+            [
+                valid_transaction_file.file_path,
+                "set",
+                "name",
+                "NEW NAME THAT EXCEEDS 28 characters limit",
+            ],
             obj={},
         )
 

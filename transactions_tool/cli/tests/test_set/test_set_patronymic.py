@@ -26,7 +26,12 @@ def test_set_patronymic_to_long(valid_transaction_file):
 
         result = runner.invoke(
             cli,
-            [valid_transaction_file.file_path, "set", "patronymic", "NEW PATRONYMIC THAT EXCEEDS 30 characters limit"],
+            [
+                valid_transaction_file.file_path,
+                "set",
+                "patronymic",
+                "NEW PATRONYMIC THAT EXCEEDS 30 characters limit",
+            ],
             obj={},
         )
 
