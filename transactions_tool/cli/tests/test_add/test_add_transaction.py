@@ -43,3 +43,16 @@ def test_add_transaction(valid_transaction_file):
             assert f_total_counter == str(previous_total_counter)
             assert f_control_sum == str(previous_control_sum + 1000)
             assert f_reserved == " " * 100
+
+
+def test_max_num_transactions(valid_transaction_file_max_transactions):
+    runner = CliRunner()
+    with runner.isolated_filesystem(temp_dir=valid_transaction_file_max_transactions.tmp_path):
+        result = runner.invoke(
+            cli,
+            [valid_transaction_file_max_transactions.file_path, "add", "transaction", "1000", "DOL"],
+            obj={},
+        )
+        assert result.exit_code == 1
+        assert result.output == "Max number of transactions reached.\n"
+

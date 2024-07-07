@@ -1,3 +1,5 @@
+from pydantic import ValidationError
+
 from ..model.file_components import Transaction
 from ..model import Model
 from .state_validator import validate
@@ -18,7 +20,10 @@ class Controller:
         )
 
     def add_transaction(self, amount: int, currency: str) -> None:
-        self._footer.total_counter += 1
+        try:
+            self._footer.total_counter += 1
+        except ValidationError:
+            raise ValueError("Max number of transactions reached.")
         self._footer.control_sum += amount
         self._transactions.append(
             Transaction(

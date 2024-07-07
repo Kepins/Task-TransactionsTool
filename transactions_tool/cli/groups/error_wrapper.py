@@ -17,5 +17,8 @@ def click_error_wrapper(func):
             click.echo("Errors:", err=True)
             for err in e.errors():
                 click.echo(err["msg"], err=True)
+        except ValueError as e:
+            click.echo(e, err=True)
+            sys.exit(1)
 
     return wrapped_func

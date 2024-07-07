@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class Footer(BaseModel):
     FIELD_ID: ClassVar[str] = "03"
 
-    total_counter: Annotated[int, Interval(ge=1, le=20000)]
+    total_counter: Annotated[int, Interval(ge=0, le=20000)]
     control_sum: Annotated[int, Interval(ge=0, le=999999999999)]
 
     @classmethod

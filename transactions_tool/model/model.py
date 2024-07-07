@@ -1,8 +1,6 @@
 import os
 from typing import Tuple
 
-from pydantic_core import PydanticCustomError
-
 from .file_components import Footer
 from .file_components.header import Header
 from .file_components import Transaction
